@@ -22,6 +22,11 @@ describe('class HashMap', () => {
             )('throws TypeError when passed a non string value: %s', (input) => {
                 expect(() => hashMap.hash(input)).toThrow(TypeError);
             });
+            test.each(
+                ['','   ', '    ']
+            )('Throws an error when passed empty or whitespace only string', (input) => {
+                expect(() => hashMap.hash(input)).toThrow(Error);
+            })
             test.each([
                 {input: 'hello', result: 2},
                 {input: 'world', result: 2},
