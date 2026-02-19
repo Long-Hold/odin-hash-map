@@ -2,10 +2,12 @@ export class HashMap {
     // The % capacity to be used before expanding capacity
     #loadFactor;
     #capacity;
+    #bucketSet;
 
     constructor() {
         this.#loadFactor = 0.75;
         this.#capacity = 16;
+        this.#bucketSet = Array.from({length: this.#capacity}, () => []);
     }
 
     get loadFactor() {
@@ -14,6 +16,10 @@ export class HashMap {
 
     get capacity() {
         return this.#capacity;
+    }
+
+    get bucketSet() {
+        return this.#bucketSet;
     }
 
     /**
@@ -47,3 +53,6 @@ class Node {
         this.next = next;
     }
 }
+
+const hash = new HashMap();
+console.log(hash.bucketSet);

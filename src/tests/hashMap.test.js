@@ -13,6 +13,9 @@ describe('class HashMap', () => {
         test('capacity returns its default size', () => {
             expect(hashMap.capacity).toBe(16);
         });
+        test('bucketSet returns an array containing the default amount of buckets', () => {
+            expect(hashMap.bucketSet.length).toBe(16);
+        });
     });
 
     describe('methods', () => {
