@@ -16,6 +16,13 @@ export class HashMap {
         return this.#capacity;
     }
 
+    /**
+     * Hashes a passed string into a value that determines which bucket in the map the Key: Value
+     * pair is inserted in.
+     * 
+     * @param {string} key - The string that is hashed to determine where to place the Key:Value pair.
+     * @returns {number} The hash code that directs which bucket to set the pair into.
+     */
     hash(key) {
         if (typeof key !== 'string') throw new TypeError('Key must be a string.');
 
