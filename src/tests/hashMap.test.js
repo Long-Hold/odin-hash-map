@@ -22,6 +22,17 @@ describe('class HashMap', () => {
             )('throws TypeError when passed a non string value: %s', (input) => {
                 expect(() => hashMap.hash(input)).toThrow(TypeError);
             });
+            test.each([
+                {input: 'hello', result: 2},
+                {input: 'world', result: 2},
+                {input: 'long-hold', result: 0},
+                {input: 'ford', result: 11},
+                {input: 'Pleasant Ave', result: 12},
+            ])('returns hash: $result when passed input: $input', ({input, result}) => {
+                // The hash should return the same value regardless of how often it is called
+                expect(hashMap.hash(input)).toBe(result);
+                expect(hashMap.hash(input)).toBe(result);
+            });
         });
     });
 });
