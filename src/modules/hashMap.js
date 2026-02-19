@@ -1,4 +1,5 @@
 export class HashMap {
+    // The % capacity to be used before expanding capacity
     #loadFactor;
     #capacity;
 
@@ -13,5 +14,9 @@ export class HashMap {
 
     get capacity() {
         return this.#capacity;
+    }
+
+    hash(key) {
+        if (typeof key !== 'string') throw new TypeError('Key must be a string.');        
     }
 }
