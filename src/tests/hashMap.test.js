@@ -51,6 +51,14 @@ describe('class HashMap', () => {
                 expect(hashMap.get('banana')).toBeNull();
                 expect(hashMap.get('oranges')).toBeNull();
             });
+            test.each([
+                {key: 'first', value: 1, result: 1},
+                {key: 'second', value: 2, result: 2},
+                {key: 'third', value: 3, result: 3},
+            ])('get("$key") returns "$result" after using set("$key", $value)', ({key, value, result}) => {
+                hashMap.set(key, value);
+                expect(hashMap.get(key)).toBe(result);
+            });
         });
     });
 });
