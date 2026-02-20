@@ -76,6 +76,14 @@ describe('class HashMap', () => {
                 expect(hashMap.has('that')).toBe(false);
                 expect(hashMap.has('those')).toBe(false);
             });
+            test.each([
+                {key: 'Matthew', value: 25},
+                {key: 'Emily', value: 26},
+                {key: 'Dinner', value: 'Salmon'},
+            ])('has("$key") returns true after set("$key", $value) is called', ({key, value}) => {
+                hashMap.set(key, value);
+                expect(hashMap.has(key)).toBe(true);
+            });
         });
     });
 });
