@@ -21,6 +21,22 @@ export class HashMap {
     get bucketSet() {
         return this.#bucketSet;
     }
+    
+    /**
+     * Private method to make sure the bucketSet is not being indexed out of bounds.
+     * This helps enforce the size functionality so the HashMap only grows as needed, rather
+     * than allowing Javascript's native array functionality to create indexes not in sequence.
+     * 
+     * @param {number} index - The index of the bucket being requested.
+     * @returns {array} The indexed bucket
+     */
+    #getBucket(index) {
+        if (index < 0 || index >= this.#bucketSet.length) {
+            throw new Error('Trying to access index out of bounds.');
+        }
+
+        return this.#bucketSet[index];
+    }
 
     /**
      * Hashes a passed string into a value that determines which bucket in the map the Key: Value
