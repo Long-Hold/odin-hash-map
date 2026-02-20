@@ -59,6 +59,16 @@ describe('class HashMap', () => {
                 hashMap.set(key, value);
                 expect(hashMap.get(key)).toBe(result);
             });
+            test('get() returns the requests value if there is a collision within a bucket', () => {
+                hashMap.set('hello', 1);
+                expect(hashMap.get('hello')).toBe(1);
+                hashMap.set('world', 1);
+                expect(hashMap.get('world')).toBe(1);
+                hashMap.set('olleh', 1);
+                expect(hashMap.get('olleh')).toBe(1);
+                expect(hashMap.get('hello')).toBe(1);
+                expect(hashMap.get('world')).toBe(1);
+            });
         });
     });
 });
