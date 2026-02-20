@@ -7,7 +7,7 @@ export class HashMap {
     constructor() {
         this.#loadFactor = 0.75;
         this.#capacity = 16;
-        this.#bucketSet = Array.from({length: this.#capacity}, () => []);
+        this.#bucketSet = new Array(this.#capacity).fill(null);
     }
 
     get loadFactor() {
@@ -68,8 +68,7 @@ export class HashMap {
         const node = new Node(trimmedKey, value);
         let bucket = this.#getBucket(bucketIndex);
         if (!bucket) {
-            const bucketHead = node;
-            bucket = bucketHead;
+            this.#bucketSet[bucketIndex] = node;
         } else {
             let iterator = bucket;
             while (iterator.next) {
