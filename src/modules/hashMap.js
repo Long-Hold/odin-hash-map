@@ -93,6 +93,20 @@ export class HashMap {
 
         return iterator.key === trimmedKey ? iterator.value : null;
     }
+
+    has(key) {
+        const trimmedKey = key.trim();
+        const bucketIndex = this.hash(trimmedKey);
+        const bucket = this.#getBucket(bucketIndex);
+
+        if (!bucket) return false;
+        let iterator = bucket;
+        while (iterator) {
+            if (iterator.key === trimmedKey) return true;
+            iterator = iterator.next;
+        }
+        return false;
+    }
 }
 
 class Node {

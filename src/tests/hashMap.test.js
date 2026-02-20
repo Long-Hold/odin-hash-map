@@ -70,5 +70,12 @@ describe('class HashMap', () => {
                 expect(hashMap.get('world')).toBe(1);
             });
         });
+        describe('set() and has()', () => {
+            test('has() returns false if the bucket is empty', () => {
+                expect(hashMap.has('this')).toBe(false);
+                expect(hashMap.has('that')).toBe(false);
+                expect(hashMap.has('those')).toBe(false);
+            });
+        });
     });
 });
