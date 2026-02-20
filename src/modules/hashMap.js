@@ -28,7 +28,7 @@ export class HashMap {
      * than allowing Javascript's native array functionality to create indexes not in sequence.
      * 
      * @param {number} index - The index of the bucket being requested.
-     * @returns {array} The indexed bucket
+     * @returns {array} The indexed bucket.
      */
     #getBucket(index) {
         if (index < 0 || index >= this.#bucketSet.length) {
@@ -66,11 +66,12 @@ export class HashMap {
         const bucketIndex = this.hash(trimmedKey);
 
         const node = new Node(trimmedKey, value);
-        if (!this.#bucketSet[bucketIndex]) {
+        let bucket = this.#getBucket(bucketIndex);
+        if (!bucket) {
             const bucketHead = node;
-            this.#bucketSet[bucketIndex] = bucketHead;
+            bucket = bucketHead;
         } else {
-            let iterator = this.#bucketSet[bucketIndex];
+            let iterator = bucket;
             while (iterator.next) {
                 iterator = iterator.next;
             }
@@ -82,9 +83,9 @@ export class HashMap {
     get(key) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
-
-        if (this.#bucketSet[bucketIndex].length === 0) return null;
-        let iterator = this.#bucketSet[bucketIndex];
+        const bucket = this.#getBucket(bucketIndex);
+        if (!bucket) return null;
+        let iterator = bucket;
 
         while (iterator.next) {
             if (iterator.key === trimmedKey) return iterator.value;
