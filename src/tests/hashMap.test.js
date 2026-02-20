@@ -84,6 +84,21 @@ describe('class HashMap', () => {
                 hashMap.set(key, value);
                 expect(hashMap.has(key)).toBe(true);
             });
-        });
+            test('returns true when checking for keys in buckets with collisions', () => {
+                hashMap.set('hello', 1);
+                hashMap.set('world', 1);
+                hashMap.set('olleh', 1);
+                expect(hashMap.has('olleh')).toBe(true)
+                expect(hashMap.has('hello')).toBe(true);
+                expect(hashMap.has('world')).toBe(true);
+            });
+            test('returns false when the bucket is not empty, but does not contain the key', () => {
+                hashMap.set('hello', 1);
+                hashMap.set('world', 1);
+                expect(hashMap.has('olleh')).toBe(false)
+                expect(hashMap.has('hello')).toBe(true);
+                expect(hashMap.has('world')).toBe(true);
+            });
+        }); 
     });
 });
