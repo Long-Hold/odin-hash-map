@@ -45,5 +45,12 @@ describe('class HashMap', () => {
                 expect(hashMap.hash(input)).toBe(result);
             });
         });
+        describe('set() and get()', () => {
+            test('get() returns null when the bucket is empty', () => {
+                expect(hashMap.get('Apple')).toBeNull();
+                expect(hashMap.get('banana')).toBeNull();
+                expect(hashMap.get('oranges')).toBeNull();
+            });
+        });
     });
 });

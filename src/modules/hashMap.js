@@ -44,6 +44,39 @@ export class HashMap {
 
         return hashCode;
     }
+
+    set(key, value) {
+        const trimmedKey = key.trim();
+        const bucketIndex = this.hash(trimmedKey);
+
+        const node = new Node(trimmedKey, value);
+        if (!this.#bucketSet[bucketIndex]) {
+            const bucketHead = node;
+            this.#bucketSet[bucketIndex] = bucketHead;
+        } else {
+            let iterator = this.#bucketSet[bucketIndex];
+            while (iterator.next) {
+                iterator = iterator.next;
+            }
+            iterator.next = node;
+        }
+        return this;
+    }
+
+    get(key) {
+        const trimmedKey = key.trim();
+        const bucketIndex = this.hash(trimmedKey);
+
+        if (this.#bucketSet[bucketIndex].length === 0) return null;
+        let iterator = this.#bucketSet[bucketIndex];
+
+        while (iterator.next) {
+            if (iterator.key === trimmedKey) return iterator.value;
+            else iterator = iterator.next;
+        }
+
+        return iterator.key === trimmedKey ? iterator.value : null;
+    }
 }
 
 class Node {
@@ -53,6 +86,3 @@ class Node {
         this.next = next;
     }
 }
-
-const hash = new HashMap();
-console.log(hash.bucketSet);
