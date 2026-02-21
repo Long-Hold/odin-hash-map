@@ -100,5 +100,47 @@ describe('class HashMap', () => {
                 expect(hashMap.has('world')).toBe(true);
             });
         }); 
+        describe('set(), remove(), and has()', () => {
+            test('returns false if the bucket is empty', () => {
+                expect(hashMap.remove('someKey')).toBe(false);
+                expect(hashMap.remove('anotherKey')).toBe(false);
+
+                hashMap.set('key', 1);
+                expect(hashMap.remove('anotherOne')).toBe(false);
+            });
+            test('returns false if the key cannot be found within a bucket', () => {
+                hashMap.set('hello', 1);
+                hashMap.set('world', 2);
+                hashMap.set('elloh', 2);
+                expect(hashMap.remove('hlleo')).toBe(false);
+            });
+            test('has() returns false after remove() returns true when passed an existing node', () =>{
+                const keys = ['hello', 'world', 'hlleo', 'llheo'];
+                keys.forEach(key => hashMap.set(key, 1));
+                keys.forEach(key => expect(hashMap.has(key)).toBe(true));
+
+                expect(hashMap.remove(keys[2])).toBe(true);
+                expect(hashMap.has(keys[2])).toBe(false);
+
+                expect(hashMap.has(keys[0])).toBe(true);
+                expect(hashMap.has(keys[1])).toBe(true);
+                expect(hashMap.has(keys[3])).toBe(true);
+
+                expect(hashMap.remove(keys[3])).toBe(true);
+                expect(hashMap.has(keys[3])).toBe(false);
+                expect(hashMap.has(keys[1])).toBe(true);
+            });
+            test('remove() re-links a new head if the first node in the list is removed', () => {
+                const keys = ['hello', 'world', 'hlleo', 'llheo'];
+                keys.forEach(key => hashMap.set(key, 1));
+                keys.forEach(key => expect(hashMap.has(key)).toBe(true));
+
+                expect(hashMap.remove(keys[0])).toBe(true);
+                expect(hashMap.has(keys[0])).toBe(false);
+                for (let i = 1; i < keys.length; ++i) {
+                    expect(hashMap.has(keys[i])).toBe(true);
+                }
+            });
+        });
     });
 });

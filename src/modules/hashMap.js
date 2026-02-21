@@ -107,6 +107,29 @@ export class HashMap {
         }
         return false;
     }
+
+    remove(key) {
+        const trimmedKey = key.trim();
+        const bucketIndex = this.hash(trimmedKey);
+        const bucket = this.#getBucket(bucketIndex);
+
+        if (!bucket) return false;
+
+        let iterator = bucket;
+        while (iterator) {
+            if (iterator.key === key) break;
+            iterator = iterator.next;
+        }
+        if (!iterator) return false;
+
+        let leftLink = bucket;
+        while (leftLink.next !== iterator) {
+            leftLink = leftLink.next;
+        }
+
+        leftLink.next = iterator.next;
+        return true;
+    }
 }
 
 class Node {
@@ -116,3 +139,7 @@ class Node {
         this.next = next;
     }
 }
+
+const hashm = new HashMap();
+console.log(hashm.hash('hlleo'));
+console.log(hashm.hash('llheo'));
