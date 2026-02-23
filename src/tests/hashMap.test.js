@@ -180,6 +180,24 @@ describe('class HashMap', () => {
                 keys.forEach(key => hashMap.set(key, 1));
                 expect(hashMap.length()).toBe(result); 
             });
+            test('returns updated length() after some entries have been removed', () => {
+                const keys = ['something', 'hello', 'world', 'ford', 'matthew', 'elloh', 'names'];
+                keys.forEach(key => hashMap.set(key, 1));
+
+                expect(hashMap.length()).toBe(7);
+                hashMap.remove(keys[2]);
+                hashMap.remove(keys[1]);
+                hashMap.remove(keys[6]);
+                expect(hashMap.length()).toBe(4);
+
+                hashMap.remove(keys[0]);
+                expect(hashMap.length()).toBe(3);
+
+                hashMap.remove(keys[3]);
+                hashMap.remove(keys[4]);
+                hashMap.remove(keys[5]);
+                expect(hashMap.length()).toBe(0);
+            });
         });
     });
 });
