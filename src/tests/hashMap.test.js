@@ -198,6 +198,21 @@ describe('class HashMap', () => {
                 hashMap.remove(keys[5]);
                 expect(hashMap.length()).toBe(0);
             });
+            test('returns updated length() after entries have been removed or inserted', () => {
+                hashMap.set('something', 1);
+                hashMap.set('nothing', 1);
+                expect(hashMap.length()).toBe(2);
+
+                hashMap.set('another thing', 1);
+                hashMap.set('hello', 1);
+                expect(hashMap.length()).toBe(4);
+
+                hashMap.remove('hello');
+                expect(hashMap.length()).toBe(3);
+
+                hashMap.set('elloh', 1);
+                expect(hashMap.length()).toBe(4);
+            });
         });
     });
 });
