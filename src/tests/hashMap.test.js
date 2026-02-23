@@ -69,6 +69,18 @@ describe('class HashMap', () => {
                 expect(hashMap.get('hello')).toBe(1);
                 expect(hashMap.get('world')).toBe(1);
             });
+            test('set() overwrites existing nodes with new values', () => {
+                hashMap.set('hello', 1);
+                hashMap.set('elloh', 1);
+                hashMap.set('name', 1);
+
+                expect(hashMap.get('hello')).toBe(1);
+                expect(hashMap.get('elloh')).toBe(1);
+                expect(hashMap.get('name')).toBe(1);
+
+                hashMap.set('   hello', 'world');
+                expect(hashMap.get(' hello ')).toBe('world');
+            })
         });
         describe('set() and has()', () => {
             test('has() returns false if the bucket is empty', () => {
