@@ -141,6 +141,32 @@ describe('class HashMap', () => {
                     expect(hashMap.has(keys[i])).toBe(true);
                 }
             });
+            test('remove() returns true and bucket becomes null when all nodes are removed', () => {
+                hashMap.set('ford', 1);
+                expect(hashMap.has('ford')).toBe(true);
+                expect(hashMap.remove('ford')).toBe(true);
+                expect(hashMap.has('ford')).toBe(false);
+                expect(hashMap.bucketSet[hashMap.hash('ford')]).toBeNull();
+
+                const keys = ['hello', 'world', 'hlleo', 'llheo'];
+                keys.forEach((key) => {
+                    hashMap.set(key, 1);
+                    expect(hashMap.has(key)).toBe(true);
+                    expect(hashMap.bucketSet[hashMap.hash(key)]).not.toBeNull();
+                });
+
+                keys.forEach((key) => {
+                    expect(hashMap.remove(key)).toBe(true)
+                    expect(hashMap.has(key)).toBe(false);
+                });
+
+                keys.forEach(key => expect(hashMap.bucketSet[hashMap.hash(key)]).toBeNull());
+            });
+            test('remove() matches trimmed keys', () => {
+                hashMap.set('hello', 1);
+                expect(hashMap.remove('  hello  ')).toBe(true);
+                expect(hashMap.has('hello')).toBe(false);
+            });
         });
     });
 });
