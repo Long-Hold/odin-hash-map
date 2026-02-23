@@ -114,14 +114,14 @@ export class HashMap {
         const bucket = this.#getBucket(bucketIndex);
 
         if (!bucket) return false;
-        if (bucket.key === key) {
+        if (bucket.key === trimmedKey) {
             this.#bucketSet[bucketIndex] = bucket.next;
             return true;
         }
 
         let iterator = bucket;
         while (iterator) {
-            if (iterator.key === key) break;
+            if (iterator.key === trimmedKey) break;
             else iterator = iterator.next;
         }
         if (!iterator) return false;
