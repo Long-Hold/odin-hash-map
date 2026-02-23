@@ -113,26 +113,23 @@ export class HashMap {
         const bucketIndex = this.hash(trimmedKey);
         const bucket = this.#getBucket(bucketIndex);
 
-        if (!bucket) return false;
-        if (bucket.key === trimmedKey) {
-            this.#bucketSet[bucketIndex] = bucket.next;
-            return true;
-        }
-
+        let leftLink = null;
         let iterator = bucket;
         while (iterator) {
-            if (iterator.key === trimmedKey) break;
-            else iterator = iterator.next;
+            if (iterator.key === trimmedKey) {
+                /**
+                 * If leftLink is null, then that means the head node is being removed.
+                 * So I have to assign the bucket to the next node in the list, or just null.
+                 */
+                if (!leftLink) this.#bucketSet[bucketIndex] = iterator.next;
+                else leftLink.next = iterator.next;
+                break;
+            }
+            leftLink = iterator;
+            iterator = iterator.next;
         }
-        if (!iterator) return false;
 
-        let leftLink = bucket;
-        while (leftLink.next !== iterator) {
-            leftLink = leftLink.next;
-        }
-        leftLink.next = iterator.next;
-
-        return true;
+        return iterator !== null;
     }
 }
 
