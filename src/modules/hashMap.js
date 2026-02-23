@@ -162,6 +162,26 @@ export class HashMap {
 
         return iterator !== null;
     }
+
+    /**
+     * Returns the total number of Nodes stored in all buckets.
+     * 
+     * @returns {number} The total number of Nodes stored across all buckets.
+     */
+    length() {
+        let entryCount = 0;
+        this.#bucketSet.forEach((bucket) => {
+            if (bucket !== null) {
+                let iterator = bucket;
+                while (iterator) {
+                    ++entryCount;
+                    iterator = iterator.next;
+                }
+            }
+        });
+
+        return entryCount;
+    }
 }
 
 class Node {

@@ -168,5 +168,10 @@ describe('class HashMap', () => {
                 expect(hashMap.has('hello')).toBe(false);
             });
         });
+        describe('length(), set(), and remove()', () => {
+            test('returns 0 when called on an empty Hash Map', () => {
+                expect(hashMap.length()).toBe(0);
+            });
+        });
     });
 });
