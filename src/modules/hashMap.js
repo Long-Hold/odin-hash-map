@@ -61,6 +61,14 @@ export class HashMap {
         return hashCode;
     }
 
+    /**
+     * Inserts a Key:Value pair into the Hash Map.
+     * Key's are strictly strings and allow querying for CRUD operations on the node.
+     * 
+     * @param {string} key - The key that is assigned to the node to be used for CRUD later.
+     * @param {any} value - The value stored in the node.
+     * @returns {this} An instance of the object to allow chaining.
+     */
     set(key, value) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
@@ -79,6 +87,13 @@ export class HashMap {
         return this;
     }
 
+    /**
+     * Retrieves the value of a Node that matches the passed key parameter.
+     * If no node can be found, returns null.
+     * 
+     * @param {string} key - The key of the Node's value to retrieve and return.
+     * @returns {any} The value of the specified Node, or null if it could not be found.
+     */
     get(key) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
@@ -94,6 +109,13 @@ export class HashMap {
         return iterator.key === trimmedKey ? iterator.value : null;
     }
 
+    /**
+     * Checks the Hash Map for to see if the specified Node with the matching key exists.
+     * If it can be found, return true, otherwise false.
+     * 
+     * @param {string} key - The key of the Node to check for.
+     * @returns {boolean} The result of the query for the Node.
+     */
     has(key) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
@@ -108,6 +130,15 @@ export class HashMap {
         return false;
     }
 
+    /**
+     * Removes the Node that matches the specified Key from the Hash Map.
+     * 
+     * If the node was located and removed, returns true.
+     * If the node could not be found, or if the bucket is empty, returns false.
+     * 
+     * @param {string} key - The key of the Node to remove.
+     * @returns {boolean} A bool indicating whether the Node was removed (true) or not (false).
+     */
     remove(key) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
