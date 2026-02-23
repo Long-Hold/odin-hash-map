@@ -172,6 +172,14 @@ describe('class HashMap', () => {
             test('returns 0 when called on an empty Hash Map', () => {
                 expect(hashMap.length()).toBe(0);
             });
+            test.each([
+                {keys: ['hello'], result: 1},
+                {keys: ['hello', 'world', 'olleh'], result: 3},
+                {keys: ['ford', 'matthew', 'food', 'occurence'], result: 4},
+            ])('returns $result after setting $keys', ({keys, result}) => {
+                keys.forEach(key => hashMap.set(key, 1));
+                expect(hashMap.length()).toBe(result); 
+            });
         });
     });
 });
