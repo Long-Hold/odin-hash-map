@@ -114,11 +114,15 @@ export class HashMap {
         const bucket = this.#getBucket(bucketIndex);
 
         if (!bucket) return false;
+        if (bucket.key === key) {
+            this.#bucketSet[bucketIndex] = bucket.next;
+            return true;
+        }
 
         let iterator = bucket;
         while (iterator) {
             if (iterator.key === key) break;
-            iterator = iterator.next;
+            else iterator = iterator.next;
         }
         if (!iterator) return false;
 
@@ -126,8 +130,8 @@ export class HashMap {
         while (leftLink.next !== iterator) {
             leftLink = leftLink.next;
         }
-
         leftLink.next = iterator.next;
+
         return true;
     }
 }
