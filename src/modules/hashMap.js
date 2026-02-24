@@ -209,6 +209,16 @@ export class HashMap {
     values() {
         const valuesArr = [];
 
+        for (let i = 0; i < this.#bucketSet.length; ++i) {
+            if (this.#bucketSet[i] === null) continue;
+
+            let iterator = this.#bucketSet[i];
+            while (iterator) {
+                valuesArr.push(iterator.value);
+                iterator = iterator.next;
+            }
+        }
+
         return valuesArr;
     }
 }
@@ -220,13 +230,3 @@ class Node {
         this.next = next;
     }
 }
-
-const hashm = new HashMap();
-console.log(hashm.hash('hlleo'));
-console.log(hashm.hash('llheo'));
-
-hashm.set('hello', 1);
-console.log(hashm.get('hello'));
-hashm.set('hello', 'world');
-console.log(hashm.get('hello'))
-console.log(hashm.bucketSet)
