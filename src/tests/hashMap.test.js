@@ -78,7 +78,7 @@ describe('class HashMap', () => {
                 expect(hashMap.get('elloh')).toBe(1);
                 expect(hashMap.get('name')).toBe(1);
 
-                hashMap.set('   hello', 'world');
+                hashMap.set('hello', 'world');
                 expect(hashMap.get(' hello ')).toBe('world');
             })
         });

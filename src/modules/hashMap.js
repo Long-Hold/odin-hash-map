@@ -73,18 +73,24 @@ export class HashMap {
     set(key, value) {
         const trimmedKey = key.trim();
         const bucketIndex = this.hash(trimmedKey);
-
         const node = new Node(trimmedKey, value);
-        let bucket = this.#getBucket(bucketIndex);
-        if (!bucket) {
-            this.#bucketSet[bucketIndex] = node;
-        } else {
-            let iterator = bucket;
-            while (iterator.next) {
-                iterator = iterator.next;
+
+        // If the bucket is empty, this while loop never runs.
+        let iterator = this.#getBucket(bucketIndex);
+        while (iterator) {
+            if (iterator.key === trimmedKey) {
+                iterator.value = value;
+                return this;
             }
-            iterator.next = node;
+            else if (iterator.next === null) {
+                iterator.next = node;
+                return this;
+            }
+            else iterator = iterator.next;
         }
+
+        // If the bucket is empty, while loop is skipped and a new head is assigned.
+        this.#bucketSet[bucketIndex] = node;
         return this;
     }
 
@@ -207,3 +213,9 @@ class Node {
 const hashm = new HashMap();
 console.log(hashm.hash('hlleo'));
 console.log(hashm.hash('llheo'));
+
+hashm.set('hello', 1);
+console.log(hashm.get('hello'));
+hashm.set('hello', 'world');
+console.log(hashm.get('hello'))
+console.log(hashm.bucketSet)
