@@ -226,5 +226,17 @@ describe('class HashMap', () => {
                 expect(hashMap.length()).toBe(4);
             });
         });
+        describe('clear()', () => {
+            test('properly resets the hashMap to its default state when called', () => {
+                const keys = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+                const collisionKeys = ['hello', 'hlleo', 'llheo', 'world', 'this',' ford', 'matthew'];
+
+                keys.forEach(key => hashMap.set(key, 1));
+                collisionKeys.forEach(key => hashMap.set(key, 1));
+
+                keys.forEach(key => expect(hashMap.has(key)).toBe(true));
+                collisionKeys.forEach(key => expect(hashMap.has(key)).toBe(true));
+            });
+        });
     });
 });

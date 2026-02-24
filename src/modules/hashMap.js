@@ -207,4 +207,3 @@ class Node {
 const hashm = new HashMap();
 console.log(hashm.hash('hlleo'));
 console.log(hashm.hash('llheo'));
-console.log(hashm.hash('b'));
