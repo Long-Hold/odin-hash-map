@@ -1,4 +1,5 @@
 export class HashMap {
+    static #defaultCapacity = 16;
     // The % capacity to be used before expanding capacity
     #loadFactor;
     #capacity;
@@ -182,6 +183,17 @@ export class HashMap {
 
         return entryCount;
     }
+
+    /**
+     * Removes all entries in the Hash Map and resets it to it's original capacity.
+     * 
+     * @returns {this} An instance of the object for chaining.
+     */
+    clear() {
+        this.#capacity = HashMap.#defaultCapacity;
+        this.#bucketSet = new Array(this.#capacity).fill(null);
+        return this;
+    }
 }
 
 class Node {
@@ -195,3 +207,4 @@ class Node {
 const hashm = new HashMap();
 console.log(hashm.hash('hlleo'));
 console.log(hashm.hash('llheo'));
+console.log(hashm.hash('b'));
