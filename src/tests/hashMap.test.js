@@ -236,6 +236,10 @@ describe('class HashMap', () => {
 
                 keys.forEach(key => expect(hashMap.has(key)).toBe(true));
                 collisionKeys.forEach(key => expect(hashMap.has(key)).toBe(true));
+
+                hashMap.clear();
+                expect(hashMap.capacity).toBe(16);
+                hashMap.bucketSet.forEach(bucket => expect(bucket).toBeNull());
             });
         });
     });
