@@ -287,7 +287,7 @@ describe('class HashMap', () => {
                 results.sort((a, b) => a - b);;
                 expect(results.length).toBe(3);
                 expect(results[2]).toBe(1000);
-            })
+            });
         });
     });
 });
