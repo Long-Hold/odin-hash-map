@@ -257,12 +257,37 @@ describe('class HashMap', () => {
                 const hashValues = hashMap.values();
                 expect(hashValues.length).toBe(values.length);
 
-                values.sort();
-                hashValues.sort();
+                values.sort((a, b) => a - b);;
+                hashValues.sort((a, b) => a - b);;
                 for (let i = 0; i < values.length; ++i) {
                     expect(values[i]).toBe(hashValues[i]);
                 }
             });
+            test('returned array correctly updates after values CRUD operations on Nodes', () => {
+                hashMap.set('hello', 1);
+                hashMap.set('hlleo', 2);
+                hashMap.set('name', 3);
+
+                let results = hashMap.values();
+                results.sort((a, b) => a - b);;
+                expect(results.length).toBe(3);
+                expect(results[0]).toBe(1);
+                expect(results[1]).toBe(2);
+                expect(results[2]).toBe(3);
+
+                hashMap.remove('hlleo');
+                results = hashMap.values();
+                results.sort((a, b) => a - b);;
+
+                expect(results.length).toBe(2);``
+                expect(results[1]).not.toBe(2);
+
+                hashMap.set('something Else', 1000);
+                results = hashMap.values();
+                results.sort((a, b) => a - b);;
+                expect(results.length).toBe(3);
+                expect(results[2]).toBe(1000);
+            })
         });
     });
 });
