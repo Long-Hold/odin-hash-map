@@ -242,5 +242,10 @@ describe('class HashMap', () => {
                 hashMap.bucketSet.forEach(bucket => expect(bucket).toBeNull());
             });
         });
+        describe('values()', () => {
+            test('returns an array', () => {
+                expect(hashMap.values()).toBeInstanceOf(Array);
+            });
+        });
     });
 });

@@ -200,6 +200,17 @@ export class HashMap {
         this.#bucketSet = new Array(this.#capacity).fill(null);
         return this;
     }
+    
+    /**
+     * Returns an array containing all stored values.
+     * 
+     * @returns {[any]} An array containing all values stored by the Nodes in the hash map.
+     */
+    values() {
+        const valuesArr = [];
+
+        return valuesArr;
+    }
 }
 
 class Node {
