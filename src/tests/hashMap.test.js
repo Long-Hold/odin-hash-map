@@ -289,5 +289,54 @@ describe('class HashMap', () => {
                 expect(results[2]).toBe(1000);
             });
         });
+        describe('entries()', () => {
+            test('returns an array', () => {
+                expect(hashMap.entries()).toBeInstanceOf(Array);
+            });
+            test('returns an empty array when Hash Map is empty', () => {
+                expect(hashMap.entries().length).toBe(0);
+            });
+            test('returns an array with the entries added to the hash map', () => {
+                const keys = [
+                    'a','b','c','d','e','f','g','h',
+                    'i','j','k','l','m','n','o','p',
+                    'hello','hlleo','world','matthew',
+                    'ford','ontario','texas','toronto'
+                ];
+
+                for (let i = 0; i < keys.length; ++i) {
+                    hashMap.set(keys[i], 1);
+                }
+                expect(hashMap.length()).toBe(keys.length);
+
+                const entries = hashMap.entries();
+                for (const [key, value] of entries) {
+                    expect(keys.includes(key)).toBe(true);
+                    expect(value).toBe(1);
+                }
+            });
+            test('returns an array that reflects entries after some are added / removed', () => {
+                const keys = ['a','b','c','d','e'];
+                for (let i = 0; i < keys.length; ++i) {
+                    hashMap.set(keys[i], 1);
+                }
+                hashMap.remove('e');
+                hashMap.remove('d');
+                let entries = hashMap.entries();
+                expect(entries.length).toBe(keys.length - 2);
+                for (const [key, value] of entries) {
+                    expect(keys.includes(key)).toBe(true);
+                }
+                hashMap.set('hello', 1);
+                hashMap.set('world', 1);
+                entries = hashMap.entries();
+                expect(entries.length).toBe(5);
+
+                keys.splice(3, 2, 'hello', 'world');
+                for (const [key, value] of entries) {
+                    expect(keys.includes(key)).toBe(true);
+                }
+            });
+        });
     });
 });
