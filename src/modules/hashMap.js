@@ -221,6 +221,27 @@ export class HashMap {
 
         return valuesArr;
     }
+
+    /**
+     * Returns an array where each index is an array of the Key:Value pairs in the Hash Map.
+     * 
+     * @returns {Array<Array>}
+     */
+    entries() {
+        const entriesArr = [];
+
+        for (let i = 0; i < this.#bucketSet.length; ++i) {
+            if (this.#bucketSet[i] === null) continue;
+
+            let iterator = this.#bucketSet[i];
+            while (iterator) {
+                entriesArr.push([iterator.key, iterator.value]);
+                iterator = iterator.next;
+            }
+        }
+
+        return entriesArr;
+    }
 }
 
 class Node {
