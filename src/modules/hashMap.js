@@ -237,6 +237,27 @@ export class HashMap {
   }
 
   /**
+   * Creates an array that stores all Keys in the hash map, and returns it.
+   * 
+   * @returns {[string]} An array containing all keys in the hash map.
+   */
+  keys() {
+    const keysArr = [];
+
+    for (let i = 0; i < this.#bucketSet.length; ++i) {
+        if (this.#bucketSet[i] === null) continue;
+
+        let iterator = this.#bucketSet[i];
+        while (iterator) {
+            keysArr.push(iterator.key);
+            iterator = iterator.next;
+        }
+    }
+
+    return keysArr;
+  }
+
+  /**
    * Returns an array containing all stored values.
    *
    * @returns {[any]} An array containing all values stored by the Nodes in the hash map.
