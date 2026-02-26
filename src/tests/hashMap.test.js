@@ -389,5 +389,59 @@ describe('class HashMap', () => {
                 expect(hashMap.bucketSet.length).toBe(16);
             });
         });
+        describe('increaseCapacity() re-hashes existing entries', () => {
+            test('a tracked key lands in a different bucket after expansion', () => {
+                const trackedKey = 'hello';
+                hashMap.set(trackedKey, 'world');
+
+                const oldIndex = hashMap.hash(trackedKey); // capacity is still 16
+                expect(oldIndex).toBe(2);
+
+                // Trigger expansion (need 12 total entries for 75% of 16)
+                elevenKeys.forEach(key => hashMap.set(key, 1));
+                expect(hashMap.capacity).toBe(32);
+
+                const newIndex = hashMap.hash(trackedKey); // now uses capacity 32
+                expect(newIndex).toBe(18);
+                expect(newIndex).not.toBe(oldIndex);
+            });
+
+            test('re-hashed entries are placed in the correct new bucket', () => {
+                hashMap.set('hello', 'world');
+                const oldIndex = hashMap.hash('hello'); // 2
+
+                elevenKeys.forEach(key => hashMap.set(key, 1));
+
+                const newIndex = hashMap.hash('hello'); // 18
+
+                // Old bucket should NOT contain 'hello'
+                let found = false;
+                let node = hashMap.bucketSet[oldIndex];
+                while (node) {
+                    if (node.key === 'hello') found = true;
+                    node = node.next;
+                }
+                expect(found).toBe(false);
+
+                // New bucket SHOULD contain 'hello'
+                found = false;
+                node = hashMap.bucketSet[newIndex];
+                while (node) {
+                    if (node.key === 'hello') found = true;
+                    node = node.next;
+                }
+                expect(found).toBe(true);
+            });
+
+            test('all entries remain accessible after expansion', () => {
+                hashMap.set('hello', 'world');
+                elevenKeys.forEach(key => hashMap.set(key, 1));
+
+                expect(hashMap.capacity).toBe(32);
+                expect(hashMap.get('hello')).toBe('world');
+                elevenKeys.forEach(key => expect(hashMap.has(key)).toBe(true));
+                expect(hashMap.length()).toBe(12);
+            });
+        });
     });
 });
