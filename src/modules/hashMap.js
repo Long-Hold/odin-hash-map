@@ -93,7 +93,6 @@ export class HashMap {
                 return this;
             }
             else if (iterator.next === null) {
-                if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
                 iterator.next = node;
                 return this;
             }
@@ -101,8 +100,9 @@ export class HashMap {
         }
 
         // If the bucket is empty, while loop is skipped and a new head is assigned.
-        if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
         this.#bucketSet[bucketIndex] = node;
+
+        if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
         return this;
     }
 
