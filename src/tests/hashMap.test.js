@@ -292,6 +292,9 @@ describe('class HashMap', () => {
         test('returns an array', () => {
             expect(hashMap.keys()).toBeInstanceOf(Array);
         });
+        test('returns an empty array when the Hash Map is empty', () => {
+            expect(hashMap.keys().length).toBe(0);
+        });
         test('returns an array containing inserted keys', () => {
             const keys = ['a','b','c','d','e','f','g','hello','matthew','tim','bob'];
             keys.forEach(key => hashMap.set(key, 1));
@@ -304,6 +307,54 @@ describe('class HashMap', () => {
             for (let i = 0; i < result.length; ++i) {
                 expect(result[i]).toBe(keys[i]);
             }
+        });
+        test('returns keys as trimmed strings', () => {
+            hashMap.set('  hello  ', 1);
+            hashMap.set(' world', 2);
+
+            const result = hashMap.keys();
+            expect(result).toContain('hello');
+            expect(result).toContain('world');
+            expect(result).not.toContain('  hello  ');
+            expect(result).not.toContain(' world');
+        });
+        test('does not include duplicate keys after overwriting an existing entry', () => {
+            hashMap.set('hello', 1);
+            hashMap.set('hello', 99);
+
+            const result = hashMap.keys();
+            const helloOccurrences = result.filter(k => k === 'hello').length;
+            expect(helloOccurrences).toBe(1);
+        });
+        test('reflects removal of keys', () => {
+            const keys = ['hello', 'world', 'ford'];
+            keys.forEach(key => hashMap.set(key, 1));
+
+            hashMap.remove('world');
+            const result = hashMap.keys();
+
+            expect(result).toContain('hello');
+            expect(result).toContain('ford');
+            expect(result).not.toContain('world');
+            expect(result.length).toBe(2);
+        });
+        test('returns all keys across buckets with collisions', () => {
+            // 'hello', 'world', 'olleh' all hash to bucket 2
+            const collisionKeys = ['hello', 'world', 'olleh'];
+            collisionKeys.forEach(key => hashMap.set(key, 1));
+
+            const result = hashMap.keys();
+            collisionKeys.forEach(key => expect(result).toContain(key));
+            expect(result.length).toBe(collisionKeys.length);
+        });
+        test('returns all keys correctly after capacity expansion', () => {
+            const keys = ['a','b','c','d','e','f','g','h','i','j','k','one more'];
+            keys.forEach(key => hashMap.set(key, 1));
+            expect(hashMap.capacity).toBe(32);
+
+            const result = hashMap.keys();
+            expect(result.length).toBe(keys.length);
+            keys.forEach(key => expect(result).toContain(key));
         });
     });
     describe('values()', () => {
