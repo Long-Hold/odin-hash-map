@@ -288,6 +288,24 @@ describe('class HashMap', () => {
         hashMap.bucketSet.forEach((bucket) => expect(bucket).toBeNull());
       });
     });
+    describe('keys()', () => {
+        test('returns an array', () => {
+            expect(hashMap.keys()).toBeInstanceOf(Array);
+        });
+        test('returns an array containing inserted keys', () => {
+            const keys = ['a','b','c','d','e','f','g','hello','matthew','tim','bob'];
+            keys.forEach(key => hashMap.set(key, 1));
+
+            const result = hashMap.keys();
+            keys.sort();
+            result.sort();
+
+            expect(result.length).toBe(keys.length);
+            for (let i = 0; i < result.length; ++i) {
+                expect(result[i]).toBe(keys[i]);
+            }
+        });
+    });
     describe('values()', () => {
       test('returns an array', () => {
         expect(hashMap.values()).toBeInstanceOf(Array);
