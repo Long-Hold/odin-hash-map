@@ -343,6 +343,13 @@ describe('class HashMap', () => {
     describe('methods with expansion and shrinking capacity', () => {
         //11 keys is 1 less than what will trigger an expansion
         const elevenKeys = ['a','b','c','d','e','f','g','h','i','j','k'];
+
+        //23 keys if 1 less than 75% of the next expansion size, 32.
+        const twentyThreeKeys = [
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
+            'p','q','r','s','t','u','v','w','x'
+        ];
+
         describe('set() expands capacity when load factor is at 75%', () => {
             test('does not expand when under 75% of loadFactor', () => {
                 for (let i = 0; i < elevenKeys.length; ++i) {
@@ -352,13 +359,34 @@ describe('class HashMap', () => {
                 expect(hashMap.capacity).toBe(16);
                 expect(hashMap.bucketSet.length).toBe(16);
             });
-            test('set() causes an expansion at 75% loadFactor or greater', () => {
+            test('set() causes an expansion at 75% loadFactor or greater from default size', () => {
                 for (let i = 0; i < elevenKeys.length; ++i) {
                     hashMap.set(elevenKeys[i], 1);
                 }
                 hashMap.set('one more', 1);
                 expect(hashMap.capacity).toBe(32);
                 expect(hashMap.bucketSet.length).toBe(32);
+            });
+            test('set() triggers multiple expansions, and clear() reverts hash to default state', () => {
+                for (let i = 0; i < elevenKeys.length; ++i) {
+                    hashMap.set(elevenKeys[i], 1);
+                }
+                hashMap.set('one more', 1);
+                expect(hashMap.capacity).toBe(32);
+                expect(hashMap.bucketSet.length).toBe(32);
+                hashMap.clear();
+                expect(hashMap.capacity).toBe(16);
+                expect(hashMap.bucketSet.length).toBe(16);
+
+                for (let i = 0; i < twentyThreeKeys.length; ++i) {
+                    hashMap.set(twentyThreeKeys[i], 1);
+                }
+                hashMap.set('one more');
+                expect(hashMap.capacity).toBe(64);
+                expect(hashMap.bucketSet.length).toBe(64);
+                hashMap.clear();
+                expect(hashMap.capacity).toBe(16);
+                expect(hashMap.bucketSet.length).toBe(16);
             });
         });
     });
