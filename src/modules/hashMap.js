@@ -23,7 +23,13 @@ export class HashMap {
         return this.#bucketSet;
     }
     
-    increaseCapacity() {
+    /**
+     * Increases the capacity of the bucketSet when the amount of entries is >= 75% of the 
+     * total amount of buckets.
+     * 
+     * After the resize is made, all entries are re-hashed.
+     */
+    #increaseCapacity() {
         const entries = this.entries();
         this.#capacity *= 2;
         this.#bucketSet = new Array(this.#capacity).fill(null);
@@ -33,6 +39,10 @@ export class HashMap {
         }
     }
 
+    /**
+     * Decreases the capacity of the hash map bucket set by half anytime the amount of entries
+     * in the bucket sets are less than the capacity / 2, and re-hashes their entries.
+     */
     #decreaseCapacity() {
         if (this.#capacity === HashMap.#defaultCapacity) return;
         const entries = this.entries();
@@ -113,7 +123,7 @@ export class HashMap {
         // If the bucket is empty, while loop is skipped and a new head is assigned.
         this.#bucketSet[bucketIndex] = node;
 
-        if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
+        if (this.length() >= (this.#loadFactor * this.#capacity)) this.#increaseCapacity();
         return this;
     }
 
