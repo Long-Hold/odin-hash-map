@@ -352,6 +352,14 @@ describe('class HashMap', () => {
                 expect(hashMap.capacity).toBe(16);
                 expect(hashMap.bucketSet.length).toBe(16);
             });
+            test('set() causes an expansion at 75% loadFactor or greater', () => {
+                for (let i = 0; i < elevenKeys.length; ++i) {
+                    hashMap.set(elevenKeys[i], 1);
+                }
+                hashMap.set('one more', 1);
+                expect(hashMap.capacity).toBe(32);
+                expect(hashMap.bucketSet.length).toBe(32);
+            });
         });
     });
 });
