@@ -34,6 +34,7 @@ export class HashMap {
     }
 
     #decreaseCapacity() {
+        if (this.#capacity === HashMap.#defaultCapacity) return;
         const entries = this.entries();
         this.#capacity /= 2;
         this.#bucketSet = new Array(this.#capacity).fill(null);

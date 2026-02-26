@@ -443,5 +443,91 @@ describe('class HashMap', () => {
                 expect(hashMap.length()).toBe(12);
             });
         });
+        describe('#decreaseCapacity() via remove()', () => {
+            // Trigger expansion first: 12 entries pushes capacity to 32
+            const expansionKeys = ['a','b','c','d','e','f','g','h','i','j','k','one more'];
+
+            test('does not shrink when length stays at or above shrink threshold', () => {
+                expansionKeys.forEach(key => hashMap.set(key, 1));
+                hashMap.set('extra', 1); // 13 total entries, capacity is 32
+                expect(hashMap.capacity).toBe(32);
+
+                // Shrink threshold at capacity 32: length < (0.75 * 32) / 2 = 12
+                // Removing 1 entry leaves 12, which is NOT < 12
+                hashMap.remove('one more');
+                expect(hashMap.capacity).toBe(32);
+                expect(hashMap.bucketSet.length).toBe(32);
+            });
+
+            test('capacity halves when length drops below shrink threshold', () => {
+                expansionKeys.forEach(key => hashMap.set(key, 1));
+                expect(hashMap.capacity).toBe(32);
+
+                // Remove entries until length < 12 (threshold for capacity 32)
+                ['a','b'].forEach(key => hashMap.remove(key));
+                expect(hashMap.capacity).toBe(16);
+                expect(hashMap.bucketSet.length).toBe(16);
+            });
+
+            test('a tracked key lands in a different bucket after shrink', () => {
+                expansionKeys.forEach(key => hashMap.set(key, 1));
+                hashMap.set('hello', 'world');
+                expect(hashMap.capacity).toBe(32);
+
+                const expandedIndex = hashMap.hash('hello'); // hash under capacity 32
+                expect(expandedIndex).toBe(18);
+
+                ['a','b'].forEach(key => hashMap.remove(key));
+                expect(hashMap.capacity).toBe(16);
+
+                const shrunkIndex = hashMap.hash('hello'); // hash under capacity 16
+                expect(shrunkIndex).toBe(2);
+                expect(shrunkIndex).not.toBe(expandedIndex);
+            });
+
+            test('re-hashed entries are placed in the correct new bucket after shrink', () => {
+                expansionKeys.forEach(key => hashMap.set(key, 1));
+                hashMap.set('hello', 'world');
+                expect(hashMap.capacity).toBe(32);
+
+                const oldIndex = hashMap.hash('hello'); // 18
+
+                ['a','b'].forEach(key => hashMap.remove(key));
+                expect(hashMap.capacity).toBe(16);
+
+                const newIndex = hashMap.hash('hello'); // 2
+
+                // 'hello' should NOT be in the old bucket
+                let found = false;
+                let node = hashMap.bucketSet[oldIndex];
+                while (node) {
+                    if (node.key === 'hello') found = true;
+                    node = node.next;
+                }
+                expect(found).toBe(false);
+
+                // 'hello' SHOULD be in the new bucket
+                found = false;
+                node = hashMap.bucketSet[newIndex];
+                while (node) {
+                    if (node.key === 'hello') found = true;
+                    node = node.next;
+                }
+                expect(found).toBe(true);
+            });
+
+            test('all remaining entries are accessible after shrink', () => {
+                expansionKeys.forEach(key => hashMap.set(key, 1));
+                hashMap.set('hello', 'world');
+                
+                ['a','b'].forEach(key => hashMap.remove(key));
+                expect(hashMap.capacity).toBe(16);
+
+                expect(hashMap.get('hello')).toBe('world');
+                const remainingKeys = expansionKeys.filter(k => k !== 'a' && k !== 'b');
+                remainingKeys.forEach(key => expect(hashMap.has(key)).toBe(true));
+                expect(hashMap.length()).toBe(remainingKeys.length + 1); // +1 for 'hello'
+            });
+        });
     });
 });
