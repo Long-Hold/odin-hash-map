@@ -339,4 +339,19 @@ describe('class HashMap', () => {
             });
         });
     });
+
+    describe('methods with expansion and shrinking capacity', () => {
+        //11 keys is 1 less than what will trigger an expansion
+        const elevenKeys = ['a','b','c','d','e','f','g','h','i','j','k'];
+        describe('set() expands capacity when load factor is at 75%', () => {
+            test('does not expand when under 75% of loadFactor', () => {
+                for (let i = 0; i < elevenKeys.length; ++i) {
+                    hashMap.set(elevenKeys[i], 1);
+                }
+
+                expect(hashMap.capacity).toBe(16);
+                expect(hashMap.bucketSet.length).toBe(16);
+            });
+        });
+    });
 });
