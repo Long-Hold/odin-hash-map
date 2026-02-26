@@ -23,6 +23,16 @@ export class HashMap {
         return this.#bucketSet;
     }
     
+    increaseCapacity() {
+        const entries = this.entries();
+        this.#capacity *= 2;
+        this.#bucketSet = new Array(this.#capacity).fill(null);
+
+        for (const [key, value] of entries) {
+            this.set(key, value);
+        }
+    }
+
     /**
      * Private method to make sure the bucketSet is not being indexed out of bounds.
      * This helps enforce the size functionality so the HashMap only grows as needed, rather
@@ -83,6 +93,7 @@ export class HashMap {
                 return this;
             }
             else if (iterator.next === null) {
+                if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
                 iterator.next = node;
                 return this;
             }
@@ -90,6 +101,7 @@ export class HashMap {
         }
 
         // If the bucket is empty, while loop is skipped and a new head is assigned.
+        if (this.length() >= (this.#loadFactor * this.#capacity)) this.increaseCapacity();
         this.#bucketSet[bucketIndex] = node;
         return this;
     }
