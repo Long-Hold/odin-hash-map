@@ -189,7 +189,7 @@ export class HashMap {
             iterator = iterator.next;
         }
 
-        if (this.length < this.#loadFactor / 2) this.#decreaseCapacity();
+        if (this.length() < ((this.#loadFactor * this.#capacity) / 2)) this.#decreaseCapacity();
         return iterator !== null;
     }
 
