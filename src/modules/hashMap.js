@@ -33,6 +33,16 @@ export class HashMap {
         }
     }
 
+    #decreaseCapacity() {
+        const entries = this.entries();
+        this.#capacity /= 2;
+        this.#bucketSet = new Array(this.#capacity).fill(null);
+
+        for (const [key, value] of entries) {
+            this.set(key, value);
+        }
+    }
+
     /**
      * Private method to make sure the bucketSet is not being indexed out of bounds.
      * This helps enforce the size functionality so the HashMap only grows as needed, rather
@@ -179,6 +189,7 @@ export class HashMap {
             iterator = iterator.next;
         }
 
+        if (this.length < this.#loadFactor / 2) this.#decreaseCapacity();
         return iterator !== null;
     }
 
